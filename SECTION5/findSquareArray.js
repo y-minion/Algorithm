@@ -17,7 +17,7 @@ function same(a, b) {
     const targetIndex = b.indexOf(doubleItem);
     //5. 제곱한 값이  없으면 즉시 순환을 종료하고 false반환
     if (targetIndex === -1) {
-      break;
+      return false;
     }
     //4. b의 인덱스가 존재하면 해당 인덱스를 기록한다.
     //6. 존재하면 SET 자료구조에 해당 인덱스를 삽입
@@ -27,5 +27,33 @@ function same(a, b) {
   return console.log(a.length === result.size);
 }
 
-same([1, 2, 3], [4, 1, 9]);
-same([1, 2, 3], [4, 4, 9]);
+// same([1, 2, 3], [4, 1, 9]);
+// same([1, 2, 3], [4, 4, 9]);
+
+//위의 풀이 방식은 O(n^2)의 시간 복잡도를 갖는다.
+
+function betterSame(a, b) {
+  if (a.length !== b.length) return false;
+
+  //각각의 배열에 대해 빈도수를 나타내는 객체를 생성한다.
+  arrayToObj1 = {};
+  arrayToObj2 = {};
+
+  //각각의 배열에 대해 병렬적으로 순환하여 각 배열의 빈도수를 arrayToObj에 나타낸다.
+  //각각의 배열에 대한 빈도수를 객체로 나타내는 것.
+  for (const item of a) {
+    arrayToObj1[item] = (arrayToObj1[item] || 0) + 1;
+  }
+  for (const item of b) {
+    arrayToObj2[item] = (arrayToObj2[item] || 0) + 1;
+  }
+
+  //이제 객 배열에 대한 빈도수를 담고 있는 객체 arrayToObj1,arrayToObj2를 비교해야한다.
+  for (const key in arrayToObj1) {
+    if (!(key ** 2 in arrayToObj2)) return false;
+    if (arrayToObj1[key] !== arrayToObj2[key ** 2]) return false;
+  }
+  return console.log(true);
+}
+
+betterSame([1, 2, 3], [4, 1, 9]);
